@@ -23,18 +23,23 @@ const getPlantsCollection = async () => {
   const querySnapshot = await getDocs(plantsRef)
   const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
+    animals: [],
     ...doc.data()
   }))
-  console.log(data)
+  data.map( async(d) => {
+    d.animaux.map(async a => (
+      await getAnimalDocument(a._key.path.segments[6]).then(arr => d.animals.push(arr))
+    ))
+  })
+  // console.log(data)
   return data
-  console.log(data)
 }
 
 const getAnimalDocument = async (animalReference) => {
   const animalRef = collection(db, "animaux");
   const docRef = doc(animalRef, animalReference)
   const docSnapshot = await getDoc(docRef)
-  return docSnapshot.data()
+  return docSnapshot.data() 
 }
 
 export {app, getPlantsCollection, getAnimalDocument}
