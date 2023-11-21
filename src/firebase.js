@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDocs, getFirestore, collection, doc, getDoc } from "firebase/firestore";
+import { getDocs, getFirestore, collection, doc, getDoc, QuerySnapshot } from "firebase/firestore"; 
+import { getStorage, ref, getDownloadURL} from "firebase/storage"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,9 +15,11 @@ const firebaseConfig = {
   appId: "1:700626087056:web:15c669c1b4855dbad27c15"
 };
 
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
+const storage = getStorage()
 
 const getPlantsCollection = async () => {
   const plantsRef = collection(db, "plantes");
@@ -24,14 +27,30 @@ const getPlantsCollection = async () => {
   const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     animals: [],
+    image: "",
     ...doc.data()
   }))
-  data.map( async(d) => {
-    d.animaux.map(async a => (
-      await getAnimalDocument(a._key.path.segments[6]).then(arr => d.animals.push(arr))
-    ))
-  })
-  // console.log(data)
+
+  await Promise.all(
+    data.map(async (dat) => {
+      await Promise.all(
+        dat.animaux.map(async (animal) => {
+          const arr = await getAnimalDocument(animal.id);
+          dat.animals.push(arr);
+        })
+      );
+
+      const pathRef = ref(storage, encodeURIComponent(dat.id + '.jpeg'));
+      try {
+        const url = await getDownloadURL(pathRef);
+        dat.image = url;
+      } catch (err) {
+        console.error(err);
+      }
+
+    })
+  );
+  
   return data
 }
 

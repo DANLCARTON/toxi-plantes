@@ -5,6 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #fefefa;
+}
+
+.presentation-site{
+  width:600px;
 }
 
 code {
@@ -15,17 +20,26 @@ code {
 .tableau{
   display: flex;
   flex-wrap: wrap;
-  margin:auto;
-  align-items: center;
+  margin:auto; 
   justify-content: center;
+  align-items: stretch;
 }
 
 .plant{
   display: flex;
   flex-wrap: wrap;
   width: 25vw;
+  padding: 1rem;
+  margin-left: 2.5vw;
+  margin-right: 2.5vw;
+  justify-content: center;
+  border-radius:1rem;
+  /* box-shadow: 5px 5px 5px#F5F5F5; */
 }
 
+.plant h4{
+  margin : 0;
+}
 .name{
   width: 100%;
  justify-content: center;
@@ -34,4 +48,35 @@ code {
 .description
 {
   text-align: justify;
+  bottom : 0;
+}
+
+img{
+  height:auto;
+  width:50%;
+}
+
+ul{
+  display: flex;
+  flex-direction: row;
+}
+
+li{
+  border-radius: 0.5rem;
+  list-style: none;
+  padding-left:1.5rem;
+  padding-right:1.5rem;
+  padding-top:0.5rem;
+  padding-bottom:0.5rem;
+}
+.Cheval{
+  background-color: khaki;
+}
+
+.Chien{
+  background-color: #E6E6FA;
+}
+
+.Chat{
+  background-color:#FFEFD5;
 }
