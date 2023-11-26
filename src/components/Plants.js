@@ -9,15 +9,15 @@ const Plants = ({firebaseApp}) => {
     const [filter, setFilter] = useState("")
 
     const fetchPlants = async () => {
-        const plantsArray = await getPlantsCollection()
-        // plants array filter etc comme dans AL
-        // if else if pareil pour les filtres
+        let plantsArray = await getPlantsCollection()
+        plantsArray = plantsArray.filter(data => data.name.toLowerCase().includes(search.toLowerCase()) || data.description.toLowerCase().includes(search.toLowerCase()))
+        plantsArray = plantsArray.filter(data => filter === "" || data.animals.some(animal => animal.name == filter))
         setPlantes(plantsArray);
     }
 
     useEffect(() => {
         fetchPlants()
-    }, [])
+    }, [search, filter])
 
     return <div>
         <h2>TOXIPLANTES</h2>

@@ -12,11 +12,11 @@ const Search = ({setSearch, setFilter}) => {
 
     return <div className="search">
         <input type="text" className="input input-text" name="search" placeholder="Rechercher..." onChange={e => handleSearch(e)} />
-        <select className="input input-select" name="filter" onChange={e => handleFilter(editableInputTypes)} >
-            <option value="none" selected>Toutes les plantes</option>
-            <option value="cat">Plantes toxiques pour les chats</option>
-            <option value="dog">Plantes toxiques pour les chiens</option>
-            <option value="horse">Plantes toxiques pour les chevaux</option>
+        <select className="input input-select" name="filter" onChange={e => handleFilter(e)} >
+            <option value="" selected>Toutes les plantes</option>
+            <option value="Chat">Plantes toxiques pour les chats</option>
+            <option value="Chien">Plantes toxiques pour les chiens</option>
+            <option value="Cheval">Plantes toxiques pour les chevaux</option>
         </select>
     </div>
 }
