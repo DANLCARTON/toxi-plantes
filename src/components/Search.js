@@ -10,7 +10,7 @@ const Search = ({setSearch, setFilter}) => {
         setFilter(e.target.value)
     }
 
-    return <div className="search">
+    return <div id="searchPlant" className="search">
         <input type="text" className="input input-text" name="search" placeholder="Rechercher..." onChange={e => handleSearch(e)} />
         <select className="input input-select" name="filter" onChange={e => handleFilter(e)} >
             <option value="" selected>Toutes les plantes</option>
