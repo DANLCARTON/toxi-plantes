@@ -1,7 +1,27 @@
 import { useState, useEffect } from "react";
-import {app as firebaseApp, getPlantsCollection, getAnimalDocument} from "../firebase.js"
+import {app as firebaseApp, getPlantsCollection} from "../firebase.js"
 import Search from './Search.js'
 // import Animals from "./Animals.js";
+
+const ReadMore = ({children}) => {
+    const text = children
+    const [isReadMore, setIsReadMore] = useState(true)
+
+    const toggleReadMore = () => {
+        setIsReadMore(!isReadMore)
+    }
+
+    return <div>
+        <p className="description">
+            {isReadMore ? text.slice(0, 200) : text}
+            <span>{isReadMore && "..."}</span>
+            <br />
+            <span className="read-more" onClick={() => toggleReadMore()} >
+                {isReadMore ? "voir plus" : "voir moins"}
+            </span>
+        </p>
+    </div>
+}
 
 const Plants = ({firebaseApp}) => {
     const [plants, setPlantes] = useState([]);
@@ -9,26 +29,29 @@ const Plants = ({firebaseApp}) => {
     const [filter, setFilter] = useState("")
 
     const fetchPlants = async () => {
-        const plantsArray = await getPlantsCollection()
-        // plants array filter etc comme dans AL
-        // if else if pareil pour les filtres
+        let plantsArray = await getPlantsCollection()
+        plantsArray = plantsArray.filter(data => data.name.toLowerCase().includes(search.toLowerCase()) || data.description.toLowerCase().includes(search.toLowerCase()))
+        plantsArray = plantsArray.filter(data => filter === "" || data.animals.some(animal => animal.name === filter))
+        plantsArray.sort((a, b) => a.name.localeCompare(b.name))
         setPlantes(plantsArray);
     }
 
     useEffect(() => {
         fetchPlants()
-    }, [])
+    }, [search, filter])
 
     return <div>
-        <h2>TOXIPLANTES</h2>
-        <p className="presentation-site">Si on dit que le chien est le meilleur ami de l'Homme, c'est aussi le cas du chat et du cheval. Grâce à ce site, vous pourrez protéger vos animaux à 4 pattes des plantes toxiques pour eux !</p>
+        {/* <h2>TOXIPLANTES</h2> */}
         <Search setSearch={setSearch} setFilter={setFilter} />
         <div className="tableau">
             {plants.map((plant, index) => (
                 <div key={index} className="plant">
                     <h3 className="name">{plant.name}</h3> 
-                    <img className="plant-image" src={plant.image} />
-                    <p className="description">{plant.description}</p>
+                    <img className="plant-image" src={plant.image} alt={plant.name} />
+                    {/* <p className="description">{plant.description}</p> */}
+                    <ReadMore>
+                        {plant.description}
+                    </ReadMore>
                     <div className="animals">
                         <h4>Toxique pour</h4>
                         <ul>
@@ -36,8 +59,6 @@ const Plants = ({firebaseApp}) => {
                             <li key={a.name} className={a.name}>{a.name}</li>
                         ))}
                         </ul>
-                       
-                        {/* {console.log(plant.image)} */}
                     </div>
                 </div>
             ))}
