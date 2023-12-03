@@ -13,4 +13,4 @@ L'application a été créée avec le framework React.js et nécéssite l'instal
 3. Lancer l'app en local
 `npm start`
 
-puis accédez à [http://localhost:3000].
+puis accédez à [](http://localhost:3000).
