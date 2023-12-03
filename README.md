@@ -1,5 +1,11 @@
 # TOXIPLANTES
 
+## Composition du groupe
+
+- Sarah N'Gotta
+- Emma Veauvy
+- Eric Thiberge
+
 ## installation en local
 
 L'application a été créée avec le framework React.js et nécéssite l'installation de node.js sur votre machine
